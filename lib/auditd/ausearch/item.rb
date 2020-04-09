@@ -6,6 +6,7 @@ module Auditd
       end
 
       module ClassMethods
+        # TODO: parse better I think I'm missing some info
         def initialize_from_auditd_syscall_line(string)
           attributes = {}
 
@@ -27,7 +28,7 @@ module Auditd
             stripped_match = match.strip
             attr_name, value = stripped_match.split('=')
 
-            attributes[attr_name.to_s] = value
+            attributes[attr_name.to_sym] = value
           end
 
           new(attributes)
