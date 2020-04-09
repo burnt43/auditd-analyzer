@@ -10,7 +10,7 @@ module Auditd
           parse_state = :looking_for_delimiter
 
           File.open(filename, 'r') do |f|
-            f.lines.take(10).each do |line|
+            f.lines.each do |line|
               stripped_line = line.strip
 
               case parse_state
@@ -26,8 +26,12 @@ module Auditd
                   type = type_string.split('=')[-1]
                   item_const_name = "#{type[0]}#{type[1..-1].downcase}"
 
-                  item_class = Auditd::Ausearch::Items.const_get(item_const_name)
-                  item_class.initialize_from_auditd_syscall_line(stripped_line)
+                  begin
+                    item_class = Auditd::Ausearch::Items.const_get(item_const_name)
+                    result.push(item_class.initialize_from_auditd_syscall_line(stripped_line))
+                  rescue NameError
+                    next
+                  end
                 end
               end
             end

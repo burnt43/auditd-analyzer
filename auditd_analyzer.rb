@@ -16,4 +16,4 @@ options = {
 }
 
 # Auditd::Analyzer::OpenCloseFd.new(options).run!
-Auditd::Ausearch::Parser.parse(options[:ausearch_file])
+puts Auditd::Ausearch::Parser.parse(options[:ausearch_file]).to_s
