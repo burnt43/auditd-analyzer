@@ -16,10 +16,16 @@ module Auditd
               case parse_state
               when :looking_for_delimiter
                 if stripped_line == AUSEARCH_GROUP_DELIMITER
+                  result.push(current_group) unless current_group.empty? 
+                  current_group = Auditd::Ausearch::Group.new
+
                   parse_state = :looking_for_ausearch_items
                 end
               when :looking_for_ausearch_items
                 if stripped_line == AUSEARCH_GROUP_DELIMITER
+                  result.push(current_group) unless current_group.empty? 
+                  current_group = Auditd::Ausearch::Group.new
+
                   parse_state = :looking_for_ausearch_items
                 else
                   type_string = stripped_line.split[0]
@@ -28,7 +34,7 @@ module Auditd
 
                   begin
                     item_class = Auditd::Ausearch::Items.const_get(item_const_name)
-                    result.push(item_class.initialize_from_auditd_syscall_line(stripped_line))
+                    current_group.push(item_class.initialize_from_auditd_syscall_line(stripped_line))
                   rescue NameError
                     next
                   end

@@ -6,6 +6,7 @@ module Auditd
       end
 
       def run!
+        groups = Auditd::Ausearch::Parser.parse(ausearch_file)
       end
 
       private

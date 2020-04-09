@@ -15,5 +15,4 @@ options = {
   ausearch_file: '/home/jcarson/git_clones/auditd-analyzer/assets/ausearch_101.txt'
 }
 
-# Auditd::Analyzer::OpenCloseFd.new(options).run!
-puts Auditd::Ausearch::Parser.parse(options[:ausearch_file]).to_s
+Auditd::Analyzer::OpenCloseFd.new(options).run!
